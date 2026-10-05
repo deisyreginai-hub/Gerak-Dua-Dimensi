@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Fisika - Gerak Dua Dimensi</title>
+    <!-- Memuat Tailwind CSS untuk desain UI yang responsif dan modern. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #f0f8ff; /* Alice Blue */
+            scroll-behavior: smooth;
+        }
+
+        /* Animasi Marquee (Running Text) */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Transisi Tab */
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e0f2fe; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1d4ed8; }
+
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px; width: 20px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 6px;
+            cursor: pointer;
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Running Text -->
+    <div class="bg-blue-900 text-white py-2 shadow-md marquee-container z-50">
+        <div class="marquee-content font-semibold tracking-wide flex items-center gap-4">
+            <span>⭐ MAN 2 Kabupaten Gorontalo</span>
+            <span>|</span>
+            <span>Mata Pelajaran Fisika Kelas XI (Fase F)</span>
+            <span>|</span>
+            <span>Guru: Deisy Regina Ibrahim, M.Pd</span>
+            <span>|</span>
+            <span>Kurikulum Merdeka</span>
+            <span>|</span>
+            <span>Kurikulum Berbasis Cinta ⭐</span>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm px-4 py-4 sticky top-0 z-40 border-b-4 border-blue-600">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-100 p-2 rounded-lg text-blue-600">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold text-blue-900 tracking-tight">Kinematika 2D</h1>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-2">
+                <button id="btn-nav-home" onclick="showTab('home')" class="nav-btn bg-blue-900 text-white px-5 py-2 rounded-full font-medium transition shadow hover:shadow-md">Beranda</button>
+                <button id="btn-nav-materi" onclick="showTab('materi')" class="nav-btn bg-white text-slate-600 px-5 py-2 rounded-full font-medium transition shadow hover:bg-blue-50">Materi</button>
+                <button id="btn-nav-simulasi" onclick="showTab('simulasi')" class="nav-btn bg-white text-slate-600 px-5 py-2 rounded-full font-medium transition shadow hover:bg-blue-50">Simulasi</button>
+                <button id="btn-nav-kuis" onclick="showTab('kuis')" class="nav-btn bg-white text-slate-600 px-5 py-2 rounded-full font-medium transition shadow hover:bg-blue-50">Kuis Evaluasi</button>
+                <button id="btn-nav-profil" onclick="showTab('profil')" class="nav-btn bg-white text-slate-600 px-5 py-2 rounded-full font-medium transition shadow hover:bg-blue-50">Profil</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow w-full max-w-5xl mx-auto p-4 md:p-6 mb-12">
+
+        <!-- BERANDA TAB -->
+        <section id="sec-home" class="tab-content fade-in block">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-blue-100">
+                <div class="relative bg-gradient-to-r from-blue-800 to-blue-500 p-8 md:p-16 text-white text-center overflow-hidden">
+                    <svg class="absolute inset-0 w-full h-full opacity-30 pointer-events-none" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 0 320 L 800 320" stroke="white" stroke-width="3" stroke-dasharray="10 10"/>
+                        <circle cx="0" cy="305" r="15" fill="#a7f3d0">
+                            <animate attributeName="cx" from="-50" to="850" dur="4s" repeatCount="indefinite" />
+                        </circle>
+                        <path d="M 100 320 Q 400 -50 700 320" fill="none" stroke="white" stroke-width="3" stroke-dasharray="15 15"/>
+                        <circle cx="100" cy="320" r="12" fill="#fde047">
+                            <animateMotion path="M 0 0 Q 300 -370 600 0" dur="3s" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="650" cy="130" r="70" fill="none" stroke="white" stroke-width="3" stroke-dasharray="8 8"/>
+                        <circle cx="650" cy="60" r="15" fill="#67e8f9">
+                            <animateTransform attributeName="transform" type="rotate" from="0 650 130" to="360 650 130" dur="4s" repeatCount="indefinite" />
+                        </circle>
+                    </svg>
+                    
+                    <div class="relative z-10">
+                        <h2 class="text-3xl md:text-5xl font-black mb-4 drop-shadow-md">Selamat Datang di Dunia Fisika!</h2>
+                        <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto font-medium drop-shadow">Mari bereksplorasi memahami rahasia gerak benda di alam semesta, mulai dari dataran tinggi Gorontalo hingga ke tepian Danau Limboto.</p>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold text-blue-900 mb-4 flex items-center gap-2">
+                                🎯 Capaian Pembelajaran
+                            </h3>
+                            <p class="text-slate-700 leading-relaxed mb-4">
+                                Setelah menggunakan media ini, kalian diharapkan mampu menganalisis <strong>Gerak Dua Dimensi</strong> (Gerak Parabola dan Gerak Melingkar) menggunakan representasi vektor, menentukan besaran-besaran fisis (kecepatan, posisi, jarak, waktu), dan merefleksikannya dalam kehidupan sehari-hari.
+                            </p>
+                            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded text-sm text-blue-800">
+                                <strong>Tips Belajar:</strong> Pelajari materinya, cobalah simulasinya bersama kelompokmu, diskusikan hasilnya, dan uji pemahamanmu di Kuis Evaluasi!
+                            </div>
+                        </div>
+                        <div class="bg-slate-100 rounded-xl p-6 relative overflow-hidden flex justify-center shadow-inner">
+                            <svg class="w-full max-w-xs h-auto" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 130 L60 50 L110 130 Z" fill="#94a3b8"/>
+                                <path d="M70 130 L110 70 L150 130 Z" fill="#cbd5e1"/>
+                                <ellipse cx="100" cy="140" rx="80" ry="10" fill="#38bdf8" opacity="0.8"/>
+                                <path d="M30 130 Q 90 20, 160 140" fill="transparent" stroke="#2563eb" stroke-width="2" stroke-dasharray="5,5"/>
+                                <circle cx="160" cy="140" r="4" fill="#dc2626"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MATERI TAB -->
+        <section id="sec-materi" class="tab-content fade-in hidden">
+            <h2 class="text-3xl font-bold text-blue-900 mb-6 text-center">Modul Eksplorasi Materi</h2>
+            
+            <div class="space-y-4">
+                <!-- Accordion 1: GLB & GLBB -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+                    <button onclick="toggleAccordion('glb')" class="w-full text-left px-6 py-4 bg-slate-50 hover:bg-blue-50 transition flex justify-between items-center">
+                        <span class="font-bold text-lg text-blue-800">1. Konsep Dasar: GLB dan GLBB</span>
+                        <svg id="icon-glb" class="w-6 h-6 text-blue-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc-glb" class="hidden px-6 py-4 border-t border-slate-100 text-slate-700 leading-relaxed">
+                        <div class="flex flex-col md:flex-row gap-6 items-center mb-4">
+                            <div class="flex-1">
+                                <p class="mb-2">Sebelum masuk ke gerak 2D, kita ingat kembali gerak 1D (satu garis lurus):</p>
+                                <ul class="list-disc pl-5 mb-4 space-y-1">
+                                    <li><strong>GLB (Gerak Lurus Beraturan):</strong> Kecepatan (v) konstan, percepatan (a) = 0. Jarak dirumuskan sebagai <em>s = v &times; t</em>.</li>
+                                    <li><strong>GLBB (Gerak Lurus Berubah Beraturan):</strong> Kecepatan berubah karena ada percepatan (a) yang konstan. Rumus: <em>v<sub>t</sub> = v<sub>0</sub> &plusmn; a &times; t</em>.</li>
+                                </ul>
+                            </div>
+                            <div class="w-full md:w-1/3 bg-blue-50 border border-blue-100 p-4 rounded-xl flex justify-center shadow-inner">
+                                <svg class="w-full h-auto max-w-[180px]" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="0" y="70" width="200" height="20" fill="#94a3b8"/>
+                                    <rect x="20" y="40" width="40" height="20" rx="4" fill="#3b82f6"/>
+                                    <circle cx="30" cy="65" r="7" fill="#1e293b"/>
+                                    <circle cx="50" cy="65" r="7" fill="#1e293b"/>
+                                    <path d="M 65 50 L 105 50" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow)"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion 2: Parabola -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+                    <button onclick="toggleAccordion('parabola')" class="w-full text-left px-6 py-4 bg-slate-50 hover:bg-blue-50 transition flex justify-between items-center">
+                        <span class="font-bold text-lg text-blue-800">2. Gerak Parabola (Proyektil)</span>
+                        <svg id="icon-parabola" class="w-6 h-6 text-blue-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc-parabola" class="hidden px-6 py-4 border-t border-slate-100 text-slate-700 leading-relaxed">
+                        <p class="mb-3">Gerak Parabola adalah perpaduan dua gerak yang <strong>saling tegak lurus</strong>. Komponen Sumbu X (GLB) dan Sumbu Y (GLBB).</p>
+                    </div>
+                </div>
+
+                <!-- Accordion 3: Melingkar -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+                    <button onclick="toggleAccordion('melingkar')" class="w-full text-left px-6 py-4 bg-slate-50 hover:bg-blue-50 transition flex justify-between items-center">
+                        <span class="font-bold text-lg text-blue-800">3. Gerak Melingkar</span>
+                        <svg id="icon-melingkar" class="w-6 h-6 text-blue-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="acc-melingkar" class="hidden px-6 py-4 border-t border-slate-100 text-slate-700 leading-relaxed">
+                        <p class="mb-3">Gerak benda pada lintasan berupa lingkaran dengan kecepatan sudut (&omega;) dan percepatan sentripetal (a<sub>s</sub>).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIMULASI TAB -->
+        <section id="sec-simulasi" class="tab-content fade-in hidden">
+            <h2 class="text-3xl font-bold text-blue-900 mb-2 text-center">Laboratorium Maya</h2>
+            <p class="text-center text-slate-600 mb-6">Uji coba konsep secara real-time dan analisis perubahannya.</p>
+            
+            <div class="flex flex-wrap justify-center gap-2 mb-6">
+                <button id="btn-sim-glb" onclick="switchSim('glb')" class="px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md font-bold transition">GLB & GLBB</button>
+                <button id="btn-sim-parabola" onclick="switchSim('parabola')" class="px-6 py-2 bg-white text-blue-600 border border-blue-200 rounded-lg shadow font-bold hover:bg-blue-50 transition">Gerak Parabola</button>
+                <button id="btn-sim-melingkar" onclick="switchSim('melingkar')" class="px-6 py-2 bg-white text-blue-600 border border-blue-200 rounded-lg shadow font-bold hover:bg-blue-50 transition">Gerak Melingkar</button>
+            </div>
+
+            <!-- Panel GLB & GLBB -->
+            <div id="panel-glb" class="bg-white p-4 md:p-6 rounded-2xl shadow-xl border border-blue-100 block">
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="w-full md:w-1/3 bg-slate-50 p-4 rounded-xl border">
+                        <h3 class="font-bold text-blue-800 mb-4 border-b pb-2">Kontrol Variabel</h3>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Kecepatan Awal (V<sub>0</sub>): <span id="val-g-v0" class="text-blue-600">5</span> m/s</label>
+                        <input type="range" id="input-g-v0" min="0" max="30" value="5" class="mb-4" oninput="updateGLBInputs()">
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Percepatan (a): <span id="val-g-a" class="text-blue-600">2</span> m/s²</label>
+                        <input type="range" id="input-g-a" min="-5" max="10" value="2" step="0.5" class="mb-6" oninput="updateGLBInputs()">
+                        <div class="flex gap-2">
+                            <button onclick="startGLB()" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg font-bold shadow transition">Gas / Rem!</button>
+                            <button onclick="resetGLB()" class="bg-slate-300 hover:bg-slate-400 text-slate-700 px-4 py-2 rounded-lg font-bold shadow transition">Reset</button>
+                        </div>
+                        <div class="mt-6 p-3 bg-white rounded border text-sm space-y-2 shadow-sm">
+                            <div class="flex justify-between text-slate-600"><span>Waktu (t):</span> <strong id="data-g-t" class="text-slate-800">0.00 s</strong></div>
+                            <div class="flex justify-between text-blue-600"><span>Kecepatan (v):</span> <strong id="data-g-v">5.00 m/s</strong></div>
+                            <div class="flex justify-between text-green-600"><span>Jarak (s):</span> <strong id="data-g-s">0.00 m</strong></div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-2/3">
+                        <div class="bg-sky-50 rounded-xl overflow-hidden border-2 border-slate-300 shadow-inner relative">
+                            <canvas id="canvas-glb" width="600" height="300" class="w-full h-auto bg-gradient-to-b from-sky-200 to-sky-100"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Parabola -->
+            <div id="panel-parabola" class="bg-white p-4 md:p-6 rounded-2xl shadow-xl border border-blue-100 hidden">
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="w-full md:w-1/3 bg-slate-50 p-4 rounded-xl border">
+                        <h3 class="font-bold text-blue-800 mb-4 border-b pb-2">Kontrol Variabel</h3>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Kecepatan Awal (V<sub>0</sub>): <span id="val-v0" class="text-blue-600">20</span> m/s</label>
+                        <input type="range" id="input-v0" min="5" max="40" value="20" class="mb-4" oninput="updateParabolaInputs()">
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Sudut Elevasi (&theta;): <span id="val-angle" class="text-blue-600">45</span>&deg;</label>
+                        <input type="range" id="input-angle" min="10" max="80" value="45" class="mb-6" oninput="updateParabolaInputs()">
+                        <div class="flex gap-2">
+                            <button onclick="startParabola()" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg font-bold shadow transition">Luncurkan!</button>
+                            <button onclick="resetParabola()" class="bg-slate-300 hover:bg-slate-400 text-slate-700 px-4 py-2 rounded-lg font-bold shadow transition">Reset</button>
+                        </div>
+                        <div class="mt-6 p-3 bg-white rounded border text-sm space-y-2 shadow-sm">
+                            <div class="flex justify-between text-slate-600"><span>Waktu (t):</span> <strong id="data-t" class="text-slate-800">0.00 s</strong></div>
+                            <div class="flex justify-between text-blue-600"><span>Posisi X:</span> <strong id="data-x">0.00 m</strong></div>
+                            <div class="flex justify-between text-green-600"><span>Posisi Y:</span> <strong id="data-y">0.00 m</strong></div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-2/3">
+                        <div class="bg-sky-50 rounded-xl overflow-hidden border-2 border-slate-300 shadow-inner relative">
+                            <canvas id="canvas-parabola" width="600" height="300" class="w-full h-auto bg-gradient-to-b from-sky-200 to-sky-100"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Melingkar -->
+            <div id="panel-melingkar" class="bg-white p-4 md:p-6 rounded-2xl shadow-xl border border-blue-100 hidden">
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="w-full md:w-1/3 bg-slate-50 p-4 rounded-xl border">
+                        <h3 class="font-bold text-blue-800 mb-4 border-b pb-2">Kontrol Variabel</h3>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Kecepatan Sudut (&omega;): <span id="val-omega" class="text-blue-600">3.1</span> rad/s</label>
+                        <input type="range" id="input-omega" min="1" max="10" step="0.1" value="3.1" class="mb-4" oninput="updateCircularInputs()">
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Jari-jari (R): <span id="val-radius" class="text-blue-600">2.0</span> m</label>
+                        <input type="range" id="input-radius" min="1" max="4" step="0.1" value="2" class="mb-6" oninput="updateCircularInputs()">
+                        <div class="p-3 bg-white rounded border text-sm space-y-2 mt-4">
+                            <div class="flex justify-between items-center"><span class="text-green-600 font-bold">V. Linear (v):</span> <strong id="data-v">6.20 m/s</strong></div>
+                            <div class="flex justify-between items-center"><span class="text-red-500 font-bold">P. Sentripetal (a<sub>s</sub>):</span> <strong id="data-as">19.22 m/s²</strong></div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-2/3">
+                        <div class="bg-slate-900 rounded-xl overflow-hidden border-2 border-slate-700 shadow-inner flex justify-center items-center p-4">
+                            <canvas id="canvas-circular" width="400" height="400" class="max-w-full h-auto bg-slate-800 rounded-full border border-slate-600"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KUIS TAB -->
+        <section id="sec-kuis" class="tab-content fade-in hidden">
+            <h2 class="text-3xl font-bold text-blue-900 mb-2 text-center">Kuis Evaluasi Formatif</h2>
+            <p class="text-center text-slate-600 mb-6">Hasil pengerjaan kuis akan tersimpan secara otomatis ke Spreadsheet Guru.</p>
+
+            <!-- Pengaturan URL Google Apps Script (Satu kali setup oleh Guru) -->
+            <div class="max-w-3xl mx-auto mb-6 bg-slate-100 p-4 rounded-xl border border-slate-300 flex flex-col md:flex-row items-center justify-between gap-3 text-sm">
+                <div class="flex items-center gap-2 text-slate-700 font-medium">
+                    <svg class="w-5 h-5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <span>Status Integrasi Google Sheet:</span>
+                </div>
+                <div class="flex items-center gap-2 w-full md:w-auto">
+                    <input type="url" id="gas-url-input" placeholder="Paste URL Web App Apps Script di sini..." class="px-3 py-1.5 border rounded text-xs w-full md:w-80 font-mono">
+                    <button onclick="saveGasUrl()" class="bg-blue-600 text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-blue-700 whitespace-nowrap">Simpan URL</button>
+                </div>
+            </div>
+            
+            <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg border-t-8 border-blue-600 p-6 md:p-10" id="quiz-container">
+                <!-- Form Biodata Siswa Sebelum Kuis -->
+                <div id="quiz-start" class="py-4">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2 text-center">Identitas Peserta Didik</h3>
+                    <p class="text-slate-600 mb-6 text-center text-sm">Isi nama dan kelasmu dengan benar sebelum memulai evaluasi.</p>
+                    
+                    <form onsubmit="handleStartQuiz(event)" class="space-y-4 max-w-md mx-auto bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Nama Lengkap Siswa</label>
+                            <input type="text" id="student-name" required placeholder="Contoh: Ahmad Rizky" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Kelas / Rombel</label>
+                            <input type="text" id="student-class" required placeholder="Contoh: XI IPA 1 / Fase F" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition transform hover:scale-[1.01] mt-2">
+                            Mulai Kuis Sekarang 🚀
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROFIL TAB -->
+        <section id="sec-profil" class="tab-content fade-in hidden">
+            <h2 class="text-3xl font-bold text-blue-900 mb-8 text-center">Profil Pengembang</h2>
+            
+            <div class="max-w-3xl mx-auto flex flex-col md:flex-row bg-white rounded-2xl shadow-xl overflow-hidden border border-blue-100">
+                <div class="bg-slate-50 w-full md:w-1/3 p-6 border-r border-slate-200">
+                    <ul class="flex flex-row md:flex-col gap-2">
+                        <li class="flex-1">
+                            <button id="btn-sub-bio" onclick="showSubProfile('bio')" class="w-full text-left px-4 py-3 rounded-lg bg-blue-600 text-white font-bold shadow-md transition">
+                                📋 Biodata Diri
+                            </button>
+                        </li>
+                        <li class="flex-1">
+                            <button id="btn-sub-foto" onclick="showSubProfile('foto')" class="w-full text-left px-4 py-3 rounded-lg bg-transparent text-slate-600 font-medium hover:bg-slate-200 transition">
+                                📸 Foto Profil
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="w-full md:w-2/3 p-8">
+                    <div id="sub-bio" class="block animate-fade-in">
+                        <div class="mb-6">
+                            <h3 class="text-2xl font-black text-blue-900">Deisy Regina Ibrahim, M.Pd</h3>
+                            <p class="text-blue-600 font-medium mt-1 border-b pb-2">Senior Instructional Designer & Guru Fisika</p>
+                        </div>
+                        <div class="space-y-4 text-slate-700">
+                            <div class="flex items-start gap-3">
+                                <div class="bg-blue-100 p-2 rounded-full text-blue-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg></div>
+                                <div><strong class="block">Instansi</strong> MAN 2 Kabupaten Gorontalo, Kantor Wilayah Kemenag Prov. Gorontalo</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="sub-foto" class="hidden flex-col items-center justify-center h-full text-center animate-fade-in">
+                        <div class="relative">
+                            <div class="w-48 h-48 rounded-full border-8 border-blue-100 shadow-xl overflow-hidden bg-slate-200 flex items-center justify-center">
+                                <img src="https://iili.io/n0B0rve.md.jpg" 
+                                     alt="Foto Profil Deisy Regina Ibrahim, M.Pd" 
+                                     class="w-full h-full object-cover"
+                                     onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Deisy+Regina+Ibrahim&background=2563eb&color=fff&size=256&font-size=0.4';">
+                            </div>
+                        </div>
+                        <h4 class="mt-6 text-xl font-bold text-blue-900">Deisy Regina Ibrahim, M.Pd</h4>
+                        <p class="text-slate-500">Gorontalo, Indonesia</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Store GAS Web App URL locally or use the default provided by teacher
+        let gasWebAppUrl = localStorage.getItem('PHYSICS_GAS_URL') || 'https://script.google.com/macros/s/AKfycbyjr902opvBhQY5zW4VfF6aPBS6yddzuDT2bzZbGQHSczxqxV5W28oqkYhBbLc7-HcG/exec';
+
+        // Global handles for animation frames
+        let gAnimId = null, pAnimId = null, cAnimId = null;
+        let gCanvas = null, gCtx = null;
+        let pCanvas = null, pCtx = null;
+        let cCanvas = null, cCtx = null;
+
+        // Kinematics Variables
+        let gV0 = 5, gA = 2, gt = 0, gScale = 12, gIsRunning = false;
+        let pV0 = 20, pAngle = 45, pG = 9.8, pt = 0, pScale = 5, pIsRunning = false, pTrail = [];
+        let cOmega = 3.1, cRadius = 2, ct = 0, cScale = 40;
+
+        // Student Data & Quiz State
+        let currentStudent = { nama: '', kelas: '' };
+        let studentAnswers = [];
+
+        // Backup Quiz Data
+        let quizData = [
+            {
+                q: "Sebuah batu dilempar ke arah Danau Limboto. Gerakan batu tersebut merupakan gerak parabola yang terdiri dari perpaduan dua gerak lurus. Pernyataan yang BENAR mengenai komponen gerak parabola tersebut adalah...",
+                opts: [
+                    "Sumbu X melakukan GLBB, Sumbu Y melakukan GLB",
+                    "Sumbu X melakukan GLB, Sumbu Y melakukan GLBB",
+                    "Keduanya melakukan Gerak Lurus Beraturan (GLB)",
+                    "Keduanya melakukan Gerak Lurus Berubah Beraturan (GLBB)"
+                ],
+                ans: 1,
+                fbRight: "Luar Biasa! Pada gerak parabola, kecepatan horizontal (Sumbu X) konstan (GLB), sedangkan vertikal (Sumbu Y) dipengaruhi gravitasi (GLBB).",
+                fbWrong: "Penalaranmu kurang tepat. Gaya gravitasi hanya bekerja menarik benda ke arah vertikal."
+            },
+            {
+                q: "Ahmad menendang bola dengan kecepatan awal (V₀) 20 m/s dan sudut elevasi 30°. Jika g = 10 m/s², berapa waktu yang dibutuhkan bola untuk mencapai titik tertinggi?",
+                opts: ["0.5 detik", "1.0 detik", "1.5 detik", "2.0 detik"],
+                ans: 1,
+                fbRight: "Hitungan Tepat! t = (V₀ * sin30°) / g = (20 * 0.5) / 10 = 1 detik.",
+                fbWrong: "Gunakan rumus Vyt = V₀ sinθ - g*t. Di titik tertinggi, Vyt = 0."
+            },
+            {
+                q: "Sebuah kincir air berputar 120 putaran dalam waktu 1 menit (60 detik). Berapakah nilai frekuensi (f) dan kecepatan sudut (ω) kincir?",
+                opts: [
+                    "f = 2 Hz ; ω = 2π rad/s",
+                    "f = 2 Hz ; ω = 4π rad/s",
+                    "f = 0.5 Hz ; ω = π rad/s",
+                    "f = 120 Hz ; ω = 240π rad/s"
+                ],
+                ans: 1,
+                fbRight: "Super! f = 120 / 60 = 2 Hz. Kecepatan sudut ω = 2πf = 4π rad/s.",
+                fbWrong: "Frekuensi adalah jumlah putaran per detik."
+            },
+            {
+                q: "Pada gerak parabola, ketika benda mencapai titik tertingginya, kondisi kecepatannya adalah...",
+                opts: [
+                    "Kecepatan benda secara total adalah nol",
+                    "Kecepatan mendatar (Vx) nol, vertikal (Vy) maksimum",
+                    "Kecepatan mendatar (Vx) konstan, kecepatan vertikal (Vy) bernilai nol",
+                    "Percepatan benda menjadi nol karena benda berhenti sejenak"
+                ],
+                ans: 2,
+                fbRight: "Analisis Vektor Hebat! Di titik puncak Vy = 0, tetapi benda tetap bergerak mendatar (Vx konstan).",
+                fbWrong: "Jika kecepatan total nol, benda akan jatuh lurus ke bawah."
+            },
+            {
+                q: "Sebuah motor melintasi jalan menikung mendatar. Gaya apa yang bertindak sebagai Gaya Sentripetal agar motor tidak tergelincir?",
+                opts: [
+                    "Gaya berat motor (W)",
+                    "Gaya dorong dari mesin knalpot",
+                    "Gaya Normal dari jalan",
+                    "Gaya Gesek statis antara ban dan aspal"
+                ],
+                ans: 3,
+                fbRight: "Pemahaman Kritis Bagus! Gaya gesek statis antara ban dan jalan berfungsi menarik motor menuju pusat tikungan.",
+                fbWrong: "Gaya Normal dan Berat berarah vertikal, bukan menuju pusat lingkaran."
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+
+        function saveGasUrl() {
+            const input = document.getElementById('gas-url-input').value.trim();
+            gasWebAppUrl = input;
+            localStorage.setItem('PHYSICS_GAS_URL', input);
+            showNotification(input ? "URL Google Apps Script berhasil disimpan!" : "URL dikosongkan. Menggunakan penyimpanan lokal.");
+            fetchQuestionsFromGAS();
+        }
+
+        function showNotification(text) {
+            const el = document.createElement('div');
+            el.className = "fixed bottom-5 right-5 bg-blue-900 text-white px-5 py-3 rounded-xl shadow-2xl z-50 text-sm animate-bounce";
+            el.innerText = text;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 3000);
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            let sec = document.getElementById('sec-' + tabId);
+            if(sec) sec.classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('bg-blue-900', 'text-white');
+                el.classList.add('bg-white', 'text-slate-600');
+            });
+            
+            let activeBtn = document.getElementById('btn-nav-' + tabId);
+            if(activeBtn) {
+                activeBtn.classList.remove('bg-white', 'text-slate-600');
+                activeBtn.classList.add('bg-blue-900', 'text-white');
+            }
+
+            if(tabId === 'simulasi') {
+                if(!gAnimId) drawGLBBase();
+                if(!cAnimId) drawCircular();
+                drawParabolaBase();
+            } else {
+                if(pAnimId) cancelAnimationFrame(pAnimId);
+                if(cAnimId) cancelAnimationFrame(cAnimId);
+                if(gAnimId) cancelAnimationFrame(gAnimId);
+                cAnimId = null; pAnimId = null; gAnimId = null;
+            }
+        }
+
+        function toggleAccordion(id) {
+            let content = document.getElementById('acc-' + id);
+            let icon = document.getElementById('icon-' + id);
+            if(content && icon) {
+                content.classList.toggle('hidden');
+                icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
+
+        function showSubProfile(id) {
+            document.getElementById('sub-bio').classList.add('hidden');
+            document.getElementById('sub-foto').classList.add('hidden');
+            document.getElementById('sub-' + id).classList.remove('hidden');
+
+            document.getElementById('btn-sub-bio').className = 'w-full text-left px-4 py-3 rounded-lg bg-transparent text-slate-600 font-medium hover:bg-slate-200 transition';
+            document.getElementById('btn-sub-foto').className = 'w-full text-left px-4 py-3 rounded-lg bg-transparent text-slate-600 font-medium hover:bg-slate-200 transition';
+
+            let active = document.getElementById('btn-sub-' + id);
+            if(active) active.className = 'w-full text-left px-4 py-3 rounded-lg bg-blue-600 text-white font-bold shadow-md transition';
+        }
+
+        function switchSim(type) {
+            document.getElementById('panel-glb').classList.add('hidden');
+            document.getElementById('panel-parabola').classList.add('hidden');
+            document.getElementById('panel-melingkar').classList.add('hidden');
+            document.getElementById('panel-' + type).classList.remove('hidden');
+
+            ['glb', 'parabola', 'melingkar'].forEach(t => {
+                let btn = document.getElementById('btn-sim-' + t);
+                if(btn) btn.className = "px-6 py-2 bg-white text-blue-600 border border-blue-200 rounded-lg shadow font-bold hover:bg-blue-50 transition";
+            });
+
+            let active = document.getElementById('btn-sim-' + type);
+            if(active) active.className = "px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md font-bold transition";
+
+            if(type === 'glb') drawGLBBase();
+            else if(type === 'parabola') drawParabolaBase();
+            else if(type === 'melingkar' && !cAnimId) drawCircular();
+        }
+
+        function updateGLBInputs() {
+            gV0 = parseFloat(document.getElementById('input-g-v0').value);
+            gA = parseFloat(document.getElementById('input-g-a').value);
+            document.getElementById('val-g-v0').innerText = gV0;
+            document.getElementById('val-g-a').innerText = gA;
+            if(!gIsRunning) drawGLBBase();
+        }
+
+        function drawGLBBackground() {
+            if(!gCtx || !gCanvas) return;
+            gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
+            gCtx.fillStyle = '#bae6fd';
+            gCtx.beginPath(); gCtx.moveTo(0, 200); gCtx.quadraticCurveTo(200, 50, 400, 200); gCtx.quadraticCurveTo(600, 100, 800, 200); gCtx.fill();
+            gCtx.fillStyle = '#475569'; gCtx.fillRect(0, gCanvas.height - 80, gCanvas.width, 80);
+            gCtx.beginPath(); gCtx.strokeStyle = 'white'; gCtx.lineWidth = 4; gCtx.setLineDash([30, 20]);
+            gCtx.moveTo(0, gCanvas.height - 40); gCtx.lineTo(gCanvas.width, gCanvas.height - 40); gCtx.stroke(); gCtx.setLineDash([]);
+        }
+
+        function drawCar(x, y) {
+            if(!gCtx) return;
+            gCtx.fillStyle = '#3b82f6'; gCtx.beginPath(); gCtx.roundRect(x, y - 35, 70, 25, 5); gCtx.fill();
+            gCtx.fillStyle = '#1d4ed8'; gCtx.fillRect(x + 40, y - 30, 20, 15);
+            gCtx.fillStyle = '#0f172a'; gCtx.beginPath(); gCtx.arc(x + 15, y - 5, 10, 0, Math.PI*2); gCtx.fill();
+            gCtx.beginPath(); gCtx.arc(x + 55, y - 5, 10, 0, Math.PI*2); gCtx.fill();
+        }
+
+        function drawGLBBase() {
+            if(gIsRunning || !gCanvas) return;
+            drawGLBBackground();
+            drawCar(30, gCanvas.height - 70);
+        }
+
+        function startGLB() {
+            if(gIsRunning) return;
+            gt = 0; gIsRunning = true; animateGLB();
+        }
+
+        function resetGLB() {
+            gIsRunning = false;
+            if(gAnimId) cancelAnimationFrame(gAnimId);
+            gt = 0;
+            document.getElementById('data-g-t').innerText = "0.00 s";
+            document.getElementById('data-g-v').innerText = gV0.toFixed(2) + " m/s";
+            document.getElementById('data-g-s').innerText = "0.00 m";
+            drawGLBBase();
+        }
+
+        function animateGLB() {
+            drawGLBBackground();
+            let v_m = gV0 + (gA * gt);
+            let s_m = (gV0 * gt) + (0.5 * gA * gt * gt);
+            let cx = 30 + (s_m * gScale);
+
+            document.getElementById('data-g-t').innerText = gt.toFixed(2) + " s";
+            document.getElementById('data-g-v').innerText = Math.max(0, v_m).toFixed(2) + " m/s";
+            document.getElementById('data-g-s').innerText = s_m.toFixed(2) + " m";
+
+            drawCar(cx, gCanvas.height - 70);
+
+            if (cx > gCanvas.width + 50 || (v_m <= 0 && gA < 0)) {
+                gIsRunning = false;
+            } else if (gIsRunning) {
+                gt += 0.04;
+                gAnimId = requestAnimationFrame(animateGLB);
+            }
+        }
+
+        function updateParabolaInputs() {
+            pV0 = parseFloat(document.getElementById('input-v0').value);
+            pAngle = parseFloat(document.getElementById('input-angle').value);
+            document.getElementById('val-v0').innerText = pV0;
+            document.getElementById('val-angle').innerText = pAngle;
+            if(!pIsRunning) drawParabolaBase();
+        }
+
+        function drawParabolaBase() {
+            if(pIsRunning || !pCanvas || !pCtx) return;
+            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+            pCtx.fillStyle = '#bae6fd'; pCtx.fillRect(0,0,pCanvas.width,pCanvas.height);
+            pCtx.fillStyle = '#4ade80'; pCtx.fillRect(0, pCanvas.height - 40, pCanvas.width, 40);
+            pCtx.beginPath(); pCtx.arc(30, pCanvas.height - 60, 6, 0, Math.PI*2); pCtx.fillStyle = '#dc2626'; pCtx.fill();
+        }
+
+        function startParabola() {
+            if(pIsRunning) return;
+            pt = 0; pTrail = []; pIsRunning = true; animateParabola();
+        }
+
+        function resetParabola() {
+            pIsRunning = false;
+            if(pAnimId) cancelAnimationFrame(pAnimId);
+            pt = 0; pTrail = [];
+            document.getElementById('data-t').innerText = "0.00 s";
+            document.getElementById('data-x').innerText = "0.00 m";
+            document.getElementById('data-y').innerText = "0.00 m";
+            drawParabolaBase();
+        }
+
+        function animateParabola() {
+            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+            pCtx.fillStyle = '#bae6fd'; pCtx.fillRect(0,0,pCanvas.width,pCanvas.height);
+            pCtx.fillStyle = '#4ade80'; pCtx.fillRect(0, pCanvas.height - 40, pCanvas.width, 40);
+            
+            let rad = pAngle * Math.PI / 180;
+            let x_m = pV0 * Math.cos(rad) * pt;
+            let y_m = pV0 * Math.sin(rad) * pt - 0.5 * pG * pt * pt;
+
+            let cx = 30 + (x_m * pScale);
+            let cy = pCanvas.height - 60 - (y_m * pScale);
+
+            document.getElementById('data-t').innerText = pt.toFixed(2) + " s";
+            document.getElementById('data-x').innerText = x_m.toFixed(2) + " m";
+            document.getElementById('data-y').innerText = (y_m > 0 ? y_m.toFixed(2) : "0.00") + " m";
+
+            if (y_m >= 0) pTrail.push({x: cx, y: cy});
+            else { pIsRunning = false; cy = pCanvas.height - 60; }
+
+            pCtx.beginPath(); pCtx.strokeStyle = 'rgba(220, 38, 38, 0.5)'; pCtx.lineWidth = 3;
+            for(let i=0; i<pTrail.length; i++){
+                if(i===0) pCtx.moveTo(pTrail[i].x, pTrail[i].y); else pCtx.lineTo(pTrail[i].x, pTrail[i].y);
+            }
+            pCtx.stroke();
+
+            pCtx.beginPath(); pCtx.arc(cx, cy, 6, 0, Math.PI*2); pCtx.fillStyle = '#dc2626'; pCtx.fill();
+
+            if (pIsRunning) {
+                pt += 0.04;
+                pAnimId = requestAnimationFrame(animateParabola);
+            }
+        }
+
+        function updateCircularInputs() {
+            cOmega = parseFloat(document.getElementById('input-omega').value);
+            cRadius = parseFloat(document.getElementById('input-radius').value);
+            document.getElementById('val-omega').innerText = cOmega.toFixed(1);
+            document.getElementById('val-radius').innerText = cRadius.toFixed(1);
+            document.getElementById('data-v').innerText = (cOmega * cRadius).toFixed(2) + " m/s";
+            document.getElementById('data-as').innerText = (cOmega * cOmega * cRadius).toFixed(2) + " m/s²";
+        }
+
+        function drawCircular() {
+            if(!cCtx || !cCanvas) return;
+            cCtx.clearRect(0, 0, cCanvas.width, cCanvas.height);
+            let cx = cCanvas.width / 2, cy = cCanvas.height / 2, rPx = cRadius * cScale;
+
+            cCtx.beginPath(); cCtx.arc(cx, cy, rPx, 0, Math.PI*2); cCtx.strokeStyle = 'rgba(255,255,255,0.2)'; cCtx.stroke();
+
+            ct += 0.02;
+            let theta = cOmega * ct;
+            let px = cx + rPx * Math.cos(theta);
+            let py = cy + rPx * Math.sin(theta);
+
+            cCtx.beginPath(); cCtx.moveTo(cx, cy); cCtx.lineTo(px, py); cCtx.strokeStyle = '#94a3b8'; cCtx.stroke();
+            cCtx.beginPath(); cCtx.arc(px, py, 10, 0, Math.PI*2); cCtx.fillStyle = '#38bdf8'; cCtx.fill();
+
+            cAnimId = requestAnimationFrame(drawCircular);
+        }
+
+        function handleStartQuiz(event) {
+            event.preventDefault();
+            currentStudent.nama = document.getElementById('student-name').value.trim();
+            currentStudent.kelas = document.getElementById('student-class').value.trim();
+
+            if(!currentStudent.nama || !currentStudent.kelas) {
+                showNotification("Silakan isi Nama dan Kelas terlebih dahulu.");
+                return;
+            }
+
+            currentQ = 0;
+            score = 0;
+            studentAnswers = [];
+            renderQuiz();
+        }
+
+        async function fetchQuestionsFromGAS() {
+            if(!gasWebAppUrl) return;
+            try {
+                const res = await fetch(gasWebAppUrl + '?action=getSoal');
+                const data = await res.json();
+                if(data && data.length > 0) {
+                    quizData = data;
+                    console.log("Soal berhasil diambil dari Spreadsheet:", data);
+                }
+            } catch(e) {
+                console.warn("Menggunakan soal default offline:", e);
+            }
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            const q = quizData[currentQ];
+            
+            let optsHTML = q.opts.map((opt, idx) => `
+                <label class="block cursor-pointer bg-slate-50 border-2 border-slate-200 hover:border-blue-400 p-4 rounded-xl transition font-medium text-slate-700">
+                    <input type="radio" name="q_opt" value="${idx}" class="mr-3 w-4 h-4 text-blue-600 focus:ring-blue-500">
+                    ${opt}
+                </label>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="flex justify-between items-center mb-6 border-b pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-blue-600 block uppercase">Peserta: ${currentStudent.nama} (${currentStudent.kelas})</span>
+                        <span class="text-sm font-bold text-slate-400">Pertanyaan ${currentQ + 1} dari ${quizData.length}</span>
+                    </div>
+                    <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-bold">Skor: ${score * (100 / quizData.length)}</span>
+                </div>
+                <h3 class="text-xl font-bold text-blue-900 mb-6 leading-relaxed">${q.q}</h3>
+                <div class="space-y-3 mb-6">${optsHTML}</div>
+                <div id="quiz-feedback" class="hidden p-4 rounded-lg mb-6 border-l-4"></div>
+                <button id="btn-quiz-submit" onclick="submitAnswer()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow transition">Cek Jawaban</button>
+            `;
+        }
+
+        function submitAnswer() {
+            const radios = document.getElementsByName('q_opt');
+            let selected = -1;
+            for(let i=0; i<radios.length; i++){
+                if(radios[i].checked) selected = parseInt(radios[i].value);
+            }
+
+            if(selected === -1) {
+                showNotification("Pilih salah satu jawaban terlebih dahulu!");
+                return;
+            }
+
+            radios.forEach(r => r.disabled = true);
+            const btn = document.getElementById('btn-quiz-submit');
+            const fbBox = document.getElementById('quiz-feedback');
+            fbBox.classList.remove('hidden');
+
+            const isCorrect = (selected === qAns(quizData[currentQ]));
+            
+            studentAnswers.push({
+                no: currentQ + 1,
+                userOptIndex: selected,
+                userOptText: quizData[currentQ].opts[selected] || '',
+                isCorrect: isCorrect,
+                correctOptIndex: qAns(quizData[currentQ])
+            });
+
+            if(isCorrect) {
+                score++;
+                fbBox.className = "p-4 rounded-lg mb-6 border-l-4 bg-green-50 border-green-500 text-green-800";
+                fbBox.innerHTML = `<strong>Tepat Sekali!</strong><br>${quizData[currentQ].fbRight || 'Jawaban Anda Benar.'}`;
+            } else {
+                fbBox.className = "p-4 rounded-lg mb-6 border-l-4 bg-red-50 border-red-500 text-red-800";
+                const rightLabel = document.querySelectorAll('label')[qAns(quizData[currentQ])];
+                if(rightLabel) rightLabel.classList.add('border-green-500', 'bg-green-50');
+                fbBox.innerHTML = `<strong>Kurang Tepat.</strong><br>${quizData[currentQ].fbWrong || 'Jawaban Anda belum tepat.'}`;
+            }
+
+            if(currentQ < quizData.length - 1) {
+                btn.innerText = "Soal Selanjutnya";
+                btn.onclick = () => { currentQ++; renderQuiz(); };
+            } else {
+                btn.innerText = "Kirim & Lihat Hasil Akhir";
+                btn.onclick = showResultAndSubmit;
+            }
+        }
+
+        function qAns(q) {
+            return (typeof q.ans === 'number') ? q.ans : parseInt(q.ans);
+        }
+
+        async function showResultAndSubmit() {
+            const container = document.getElementById('quiz-container');
+            const totalQuestions = quizData.length;
+            const finalScore = Math.round((score / totalQuestions) * 100);
+            const wrongCount = totalQuestions - score;
+
+            container.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="inline-block p-4 bg-blue-50 rounded-full mb-4">
+                        <svg class="w-16 h-16 text-blue-600 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m0 14v1m8-8h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">Mengirimkan Hasil Evaluasi...</h3>
+                    <p class="text-slate-600 text-sm">Jawaban sedang disimpan ke Database Spreadsheet Guru.</p>
+                </div>
+            `;
+
+            // Kirim ke Google Apps Script
+            let detailFormatted = studentAnswers.map(a => 
+                `No.${a.no}: ${String.fromCharCode(65 + a.userOptIndex)} [${a.isCorrect ? 'BENAR' : 'SALAH'}]`
+            ).join(' | ');
+
+            const payload = {
+                nama: currentStudent.nama,
+                kelas: currentStudent.kelas,
+                waktu: new Date().toLocaleString('id-ID'),
+                jumlahBenar: score,
+                jumlahSalah: wrongCount,
+                skor: finalScore,
+                detailJawaban: detailFormatted
+            };
+
+            let isSavedToSheet = false;
+            if(gasWebAppUrl) {
+                try {
+                    await fetch(gasWebAppUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    isSavedToSheet = true;
+                } catch(e) {
+                    console.error("Gagal mengirim ke GAS:", e);
+                }
+            }
+
+            container.innerHTML = `
+                <div class="text-center py-6">
+                    <div class="text-6xl mb-4">🏆</div>
+                    <h3 class="text-lg font-bold text-slate-500 uppercase tracking-widest mb-1">Hasil Evaluasi Fisika</h3>
+                    <div class="text-2xl font-bold text-blue-900 mb-2">${currentStudent.nama} (${currentStudent.kelas})</div>
+                    <div class="text-6xl font-black text-blue-600 mb-6">${finalScore}</div>
+                    
+                    <div class="grid grid-cols-2 gap-4 max-w-sm mx-auto mb-6 text-sm">
+                        <div class="bg-green-50 p-3 rounded-lg border border-green-200"><span class="block text-green-700 font-bold">Jawaban Benar</span><strong class="text-2xl text-green-800">${score}</strong></div>
+                        <div class="bg-red-50 p-3 rounded-lg border border-red-200"><span class="block text-red-700 font-bold">Jawaban Salah</span><strong class="text-2xl text-red-800">${wrongCount}</strong></div>
+                    </div>
+
+                    ${isSavedToSheet ? 
+                        `<div class="inline-flex items-center gap-2 text-xs bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full font-bold mb-6">
+                            ✓ Berhasil Tersimpan ke Database Guru
+                         </div>` : 
+                        `<div class="inline-flex items-center gap-2 text-xs bg-amber-100 text-amber-800 px-4 py-2 rounded-full font-bold mb-6">
+                            ℹ️ Mode Mandiri (Belum Terhubung ke Sheets Guru)
+                         </div>`
+                    }
+
+                    <div class="flex flex-col md:flex-row gap-4 justify-center">
+                        <button onclick="location.reload()" class="bg-blue-600 text-white font-bold px-8 py-3 rounded-full shadow hover:bg-blue-700 transition">Ulangi Evaluasi</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.addEventListener('load', () => {
+            if(gasWebAppUrl) {
+                document.getElementById('gas-url-input').value = gasWebAppUrl;
+                fetchQuestionsFromGAS();
+            }
+            gCanvas = document.getElementById('canvas-glb'); gCtx = gCanvas ? gCanvas.getContext('2d') : null;
+            pCanvas = document.getElementById('canvas-parabola'); pCtx = pCanvas ? pCanvas.getContext('2d') : null;
+            cCanvas = document.getElementById('canvas-circular'); cCtx = cCanvas ? cCanvas.getContext('2d') : null;
+            updateGLBInputs(); updateParabolaInputs(); updateCircularInputs();
+            drawGLBBase();
+        });
+    </script>
+</body>
+</html>
